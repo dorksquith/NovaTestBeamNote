@@ -1,0 +1,86 @@
+\documentclass[11pt]{extarticle} %extarticle is the same as article but allows different font sizes eg 12pt
+\usepackage{geometry}\geometry{ a4paper, total={170mm,250mm},left=22mm,top=22mm } %without this the margins are just huge.
+\usepackage{setspace}
+\onehalfspacing
+\raggedbottom
+\interlinepenalty=10000
+\usepackage{scalerel} % this allows me to change the size of subscript font. Too big by default.
+
+\usepackage{amsmath,amssymb}
+
+\usepackage{siunitx}
+
+\usepackage{cantarell} % font selection
+\renewcommand{\familydefault}{\sfdefault}
+\everymath{\displaystyle}
+\usepackage{cancel}
+
+\usepackage{xcolor}
+\usepackage{pifont}
+\usepackage{fontawesome}
+\usepackage[most]{tcolorbox}
+
+\usepackage{hyperref}
+\usepackage{booktabs,subcaption}
+
+\usepackage{placeins}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+    
+\definecolor{mygreen}{RGB}{34,139,34}
+\definecolor{myblue}{RGB}{135,206,235}
+\newcommand{\dfinger}{\textcolor{magenta}{\ding{43}}}
+\newcommand{\dstar}{\textcolor{white}{\ding{76}}}
+\newcommand{\experiment}{\textcolor{white}{\faCogs }}
+\newcommand{\derivation}{\large{\textcolor{black}{\ding{45}}}\normalsize}
+\newcommand{\minus}[1]{{#1}^{-}}
+\newcommand{\plus}[1]{{#1}^{+}}
+\newcommand{\ihat}{\hat{\imath}}
+\newcommand{\jhat}{\hat{\jmath}}
+\newcommand{\thetahat}{\hat{\theta}}
+\newcommand{\rhat}{\hat{r}}
+\newcommand*{\xhat}[1]{#1\kern-0.45em\hat{\phantom{#1}}}
+
+\graphicspath{{figs/}}
+
+% key formula
+%\tcbset{colframe=blue!50!black,colback=white,colupper=red!50!black, fonttitle=\bfseries,nobeforeafter,}
+
+\newtcolorbox{keyf}[1]
+{
+enhanced, on line, %boxsep=0pt,left=6pt,right=6pt,top=2pt,bottom=2pt,rightrule=1pt,
+colback=myblue,
+colframe=myblue!50!black,
+title={\dstar\;#1}
+}
+
+
+\newtcolorbox{note}[1][]{
+enhanced, on line,
+title=\dfinger,
+attach title to upper={\ },
+colframe=magenta,
+#1
+}
+
+\newtcolorbox{keyexp}[1]{
+colback=green!10!white, 
+colframe=green!50!black, 
+%fonttitle=\bfseries,
+title={\experiment\;#1}
+}
+
+\def\mybarr#1{%%
+  { \color{red!65!black}\rule{#1cm}{8pt} }
+  }
+
+\def\mybarb#1{%%
+   {\color{blue!65!black}\rule{#1cm}{8pt}}}
+  

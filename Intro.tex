@@ -1,0 +1,18 @@
+\section{Intro}
+
+\textcolor{red}{This tech note is under heavy development!}
+
+Documentation of the plots and notes made in 2023 as part of an effort to understand the testbeam data.
+
+The WCTrackAlg is at \href{https://github.com/novaexperiment/novasoft/blob/feature/lasquith_tracking/BeamlineReco/WCTrackAlg.cxx}{WCTrackAlg.cxx}.
+
+
+There are four wire chambers in the NOvA testbeam beamline setup, with two on either side of the magnet. The thinking is that a particle from the tertiary beam will traverse all four wire chambers on its way to the baby NOvA detector , allowing for reconstruction of a track with a well-measured momentum and direction. This wirechamber track can be combined with the time-of-flight measurement to get a wirechamber mass, and thus a particle ID.
+
+In practice we observe that there are quite often only 3 (or fewer) wire chambers with a signal, so it may be helpful to update the algorithm to allow for 3-point tracks. 
+
+The purpose of the study detailed in this section is to validate the changes made to the WCTrackAlg, while understanding the implications of using 3 point tracks.
+
+The track algorithm itself is quite simple, but the geometries require a bit of thought, so the first section here is devoted to clarifying that.
+
+After completing the new implementation of WCTrackAlg I started to look at the detector, and so this monstrous tech note continues to grow.
