@@ -416,7 +416,7 @@ Figure~\ref{fig_mex1} and Figure~\ref{fig_mey1} show the x and y position of ent
 The reader may find it easier to visualise using Figure~\ref{fig_momentum}.
 
   \begin{figure}[h]
-  
+    \centering   
      	\includegraphics[scale=0.18]{NEW-figsingle_period2_p_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_p_level0_neg_stats_1000Amps.png}
 	 
@@ -436,9 +436,11 @@ When the magnet polarity is set to negative, only negatively charged particles (
 
 My plan to explore this further was to make plots of the hit positions within each wire chamber for negative and positive polarity; these are shown in Figure~\ref{fig_xyhitspol} and don't indicate any polarity-related differences between the wirechambers' performance. So I went back to thinking about what other conditions were related to the polarity differences.
 
+\textcolor{red}{I concluded that there is no correlation between polarity and WC performance - gave a talk on it late April. add a para on that.}
+
 
   \begin{figure}[h]
-  
+    \centering   
      	\includegraphics[scale=0.18]{NEW-figsingle_period234_intensity_level0_pos_stats_allAmps_nomomcut.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period234_intensity_level0_neg_stats_allAmps_nomomcut.png}
 	 
@@ -452,7 +454,7 @@ My plan to explore this further was to make plots of the hit positions within ea
   \end{figure}
  
   \begin{figure}[h]
-  
+    \centering   
      	\includegraphics[scale=0.18]{NEW-figsingle_period234_run_level0_pos_stats_allAmps_nomomcut.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period234_run_level0_neg_stats_allAmps_nomomcut.png}
 	 
@@ -462,7 +464,7 @@ My plan to explore this further was to make plots of the hit positions within ea
  	\includegraphics[scale=0.18]{NEW-figsingle_period234_run_level4_pos_stats_allAmps_nomomcut.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period234_run_level4_neg_stats_allAmps_nomomcut.png}
    \caption[short]{The run number for top: no cuts, middle: trigger and tof cuts; bottom: + deadtime and detector hit cuts. Left is positive polarity, right is negative polarity.}
-   \label{fig_intensity}
+   \label{fig_run}
   \end{figure}
   
   
@@ -492,6 +494,7 @@ My plan to explore this further was to make plots of the hit positions within ea
  \item[WCTrack.TransDistToMagAxis()]{
 Transverse distance from WC track intercept to central axis of magnet. Figure~\ref{fig_magdist} shows the  distributions for the 1000 Amp magnet current setting in the three periods for positive and negative polarity settings.
   \begin{figure}[h]
+    \centering   
      	\includegraphics[scale=0.18]{NEW-figsingle_period2_magdist_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_magdist_level0_neg_stats_1000Amps.png}
 	 
@@ -513,6 +516,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
  
  
  \begin{figure}
+   \centering   
  \includegraphics[scale=0.35]{fig_p_level4_neg_stats.png}
  \caption[short]{The WCTrack momentum for negative polarity broken down by row: period and column: magnet current setting. There is a common y-axis scale for all plots.}
  \label{fig:p12_neg}
@@ -520,6 +524,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
  
  
   \begin{figure}
+    \centering   
  \includegraphics[scale=0.35]{fig_p_level4_pos_stats.png}
  \caption[short]{The WCTrack momentum for positive polarity broken down by row: period and column: magnet current setting. There is a common y-axis scale for all plots.}
  \label{fig:p12_pos}
@@ -529,7 +534,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
   
   \item[WCTrack.YKink()] {  Angle difference dy/dz  between upstream and downstream tracks. Figure~\ref{fig_ykink} shows the  distributions for the 1000 Amp magnet current setting in the three periods for positive and negative polarity settings.
     \begin{figure}[h]
-    
+      \centering   
        	\includegraphics[scale=0.18]{NEW-figsingle_period2_ykink_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_ykink_level0_neg_stats_1000Amps.png}
 	 
@@ -546,7 +551,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
  \item[WCTrack.Residual()] {   
    Returns the average residual, indicating the goodness of fit to a linear regression for the points used in the track. Figure~\ref{fig_residual} shows the  distributions for the 1000 Amp magnet current setting in the three periods for positive and negative polarity settings. Note that the definition of the residual is different in the case of the original WCTrack from the new 4 and 3 point tracks, as described in Section~\ref{sec_residual}.
          \begin{figure}[h]
-         
+           \centering   
             	\includegraphics[scale=0.18]{NEW-figsingle_period2_residual_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_residual_level0_neg_stats_1000Amps.png}
 	 
@@ -563,6 +568,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
 \item[WCTrack.XYFace]{
   X and Y position of the track on the upstream face of the detector. Figure~\ref{fig_x} and  \ref{fig_y} show the distributions for the 1000 Amp magnet current setting in the three periods for positive and negative polarity settings.
       \begin{figure}[h]
+        \centering   
          	\includegraphics[scale=0.18]{NEW-figsingle_period2_x_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_x_level0_neg_stats_1000Amps.png}
 	 
@@ -576,6 +582,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
   \end{figure}
   
       \begin{figure}[h]
+        \centering   
          	\includegraphics[scale=0.18]{NEW-figsingle_period2_y_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_y_level0_neg_stats_1000Amps.png}
 	 
@@ -596,6 +603,7 @@ Transverse distance from WC track intercept to central axis of magnet. Figure~\r
 Distance between upstream and downstream track ends. The x, y, z intercepts of both the upstream an downstream portions of each track are calculated, and the difference between upstream and downstream is the DeltaDist. Figure~\ref{fig_ddx}  shows a notable difference in the original tracking algorithm, which is centred around 150cm,  and the new implementation which is centred around zero. The track is expected to be diverted in the x-direction due to magnetic field, so I do not understand why the new implementation gives a distribution around zero. \textcolor{red}{check the implementation of DeltaDist}. The y-dsstribution in Figure~\ref{fig_ddy} also shows a difference, with the delta dy distribution being more sharlpy peaked in the original WCTrack implementation.  In this case though both the original and new implementations have a delta dy peaking about zero, which is what I would expect. finally the delta dx distribution shown in Figure~\ref{fig_ddz} echoes the delta dx distribution differences, but in this case the original delta dz distribution is shifted by just over 20cm. I don't understand this. 
 
  \begin{figure}[h]	 
+   \centering   
     	\includegraphics[scale=0.18]{NEW-figsingle_period2_ddx_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_ddx_level0_neg_stats_1000Amps.png}
 	 
@@ -610,6 +618,7 @@ Distance between upstream and downstream track ends. The x, y, z intercepts of b
   
   
    \begin{figure}[h]	 
+     \centering   
    
       	\includegraphics[scale=0.18]{NEW-figsingle_period2_ddy_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_ddy_level0_neg_stats_1000Amps.png}
@@ -624,6 +633,7 @@ Distance between upstream and downstream track ends. The x, y, z intercepts of b
   \end{figure}
   
      \begin{figure}[h]	 
+       \centering   
      
         	\includegraphics[scale=0.18]{NEW-figsingle_period2_ddz_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_ddz_level0_neg_stats_1000Amps.png}
@@ -641,7 +651,8 @@ Distance between upstream and downstream track ends. The x, y, z intercepts of b
 \item[WCTrack.MagnetEntryPoint()]{
 X,Y,Z intersect of upstream WC track with front face of magnet  X, Y, Z.
 
-     \begin{figure}[h]	      
+     \begin{figure}[h]	  
+       \centering       
         	\includegraphics[scale=0.18]{NEW-figsingle_period2_mex_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_mex_level0_neg_stats_1000Amps.png}
 	 
@@ -654,7 +665,8 @@ X,Y,Z intersect of upstream WC track with front face of magnet  X, Y, Z.
    \label{fig_mex}
   \end{figure}
   
-       \begin{figure}[h]	   
+       \begin{figure}[h]	
+         \centering      
         	\includegraphics[scale=0.18]{NEW-figsingle_period2_mey_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_mey_level0_neg_stats_1000Amps.png}
 	 
@@ -673,6 +685,7 @@ X,Y,Z intersect of upstream WC track with front face of magnet  X, Y, Z.
 Hits on each chamber used to make the track  WCHit()[0].X()
 
        \begin{figure}[h]	   
+         \centering   
         	\includegraphics[scale=0.18]{wcn_xy1_pol1_period2.png}
 	 \includegraphics[scale=0.18]{wcn_xy1_pol0_period2.png}
 	 
@@ -687,7 +700,8 @@ Hits on each chamber used to make the track  WCHit()[0].X()
   \end{figure}
   
   
-         \begin{figure}[h]	   
+         \begin{figure}[h]	
+           \centering      
         	\includegraphics[scale=0.18]{wcn_xy2_pol1_period2.png}
 	 \includegraphics[scale=0.18]{wcn_xy2_pol0_period2.png}
 	 
@@ -702,7 +716,8 @@ Hits on each chamber used to make the track  WCHit()[0].X()
   \end{figure}
   
   
-         \begin{figure}[h]	   
+         \begin{figure}[h]	
+           \centering      
         	\includegraphics[scale=0.18]{wcn_xy3_pol1_period2.png}
 	 \includegraphics[scale=0.18]{wcn_xy3_pol0_period2.png}
 	 
@@ -717,7 +732,8 @@ Hits on each chamber used to make the track  WCHit()[0].X()
   \end{figure}
   
   
-         \begin{figure}[h]	   
+         \begin{figure}[h]	
+           \centering      
         	\includegraphics[scale=0.18]{wcn_xy4_pol1_period2.png}
 	 \includegraphics[scale=0.18]{wcn_xy4_pol0_period2.png}
 	 
@@ -739,6 +755,7 @@ Hits on each chamber used to make the track  WCHit()[0].X()
 Unit vector describing direction of downstream track.
 
        \begin{figure}[h]	   
+         \centering   
         	\includegraphics[scale=0.18]{NEW-figsingle_period2_dix_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_dix_level0_neg_stats_1000Amps.png}
 	 
@@ -753,6 +770,7 @@ Unit vector describing direction of downstream track.
   
   
        \begin{figure}[h]	   
+         \centering   
         	\includegraphics[scale=0.18]{NEW-figsingle_period2_diy_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_diy_level0_neg_stats_1000Amps.png}
 	 
@@ -765,7 +783,8 @@ Unit vector describing direction of downstream track.
    \label{fig_diy}
   \end{figure}
   
-         \begin{figure}[h]	   
+         \begin{figure}[h]	
+         \centering   
         	\includegraphics[scale=0.18]{NEW-figsingle_period2_diz_level0_pos_stats_1000Amps.png}
 	 \includegraphics[scale=0.18]{NEW-figsingle_period2_diz_level0_neg_stats_1000Amps.png}
 	 
@@ -800,6 +819,8 @@ Integer corresponding to the number of the wirechamber with no hit.
   
   Usual quality cuts are on Residual, TransDistToMagAxis, YKink.\\
   
-  In addition the analyser might want to cut on WCMisssed.
+  In addition the analyser might want to cut on WCMisssed.\\
+  
+  \textcolor{red}{Several things to add here}
 
 
