@@ -6,7 +6,17 @@ No detector deadtime\\[1ex]
 Have a time-of-flight measurement\\[1ex]
 Have at least one in-time detector hit.\\[1ex]
 
+\subsection{The baby NOvA coordinates}
 
+
+Figure~\ref{fig_novarot} shows the  detector rotation.
+
+\begin{figure}[h]	   
+ \centering
+        	\includegraphics[scale=0.5]{novarot.png}	 
+   \caption[short]{NOvA rotation.}
+   \label{fig_novarot}
+  \end{figure}
 
 \subsection{Structure: Cells and Planes}
 \noindent
@@ -76,20 +86,41 @@ The energy deposited in calorimeter cells is recorded as PE (PhotoElectrons) and
   \end{figure}
 %  
 %    
-%\subsection{Prongs}
-%
-%Prongs are 2D or 3D objects made from clusters of cells and the interpolation between them. The FuzzyK algorithm is used for their reconstruction. The testbeam data processing chain makes prongs from all cell hits, even those that are not in time with a beamline trigger. Prongs can be used in place of tracks for the trajectories of particles passing through the detector. I don't know why we need both, actually.
-%
-%A prong is seeded by a vertex, which in the case of the tesbeam is the entry point of the beamline track and the front face of the detector.
-%
-%One issue that arose recently is that there can be more than one prong in a slice, which doesn't make sense as there is only ever one beamline track. Or maybe it does make sense, as there can be two separate clusters of cells pointing back to that same vertex.
-%
-%
-%Prongs or tracks can be used for a measurement of dE/dx, that is the energy lost by a particle as it passes through the detector. 
-%
+\subsection{Hit properties}
+
+Cell hits that are in time with the trigger can be matched to a beamline track (with ``known'' particle type). Here are some plots of some hit properties. 
 
 
-%
+ \begin{figure}	   
+ \centering
+  \includegraphics[scale=0.25]{pimu_det_drzdetail_pol-1_period4_miss0.png }
+   \includegraphics[scale=0.25]{proton_det_drzdetail_pol-1_period4_miss0.png }
+     \includegraphics[scale=0.25]{kaon_det_drzdetail_pol-1_period4_miss0.png }
+   \includegraphics[scale=0.25]{ckov_det_drzdetail_pol-1_period4_miss0.png }
+     \includegraphics[scale=0.25]{other_4_hitz_hitdr_level0_posneg_AllMom_Cur1.png }
+
+  \caption{Drs - script single-plot-detdrzdetail.py.}			
+   \label{fig_detdrz}
+  \end{figure}
+  
+   \begin{figure}	   
+ \centering
+  \includegraphics[scale=0.25]{pimu_4_hitdr_hitpe_level0_posneg_AllMom_Cur1.png}
+   \includegraphics[scale=0.25]{proton_4_hitdr_hitpe_level0_posneg_AllMom_Cur1.png}
+     \includegraphics[scale=0.25]{kaon_4_hitdr_hitpe_level0_posneg_AllMom_Cur1.png}
+   \includegraphics[scale=0.25]{ckov_4_hitdr_hitpe_level0_posneg_AllMom_Cur1.png}
+     \includegraphics[scale=0.25]{other_4_hitdr_hitpe_level0_posneg_AllMom_Cur1.png}
+
+  \caption{Dr versus PE - script 2d-plot-style.py.}			
+   \label{fig_detdrpe}
+  \end{figure}
+
+
+
+
+
+
+
 %% DETECTOR PLANE XY PLOTS WITH STRAIGHT LINE FIT
 %
 \section{All the plots: detector plane rotations}\label{app_fit_XY}
