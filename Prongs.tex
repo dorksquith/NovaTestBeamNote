@@ -1,0 +1,33 @@
+
+\section{Prongs}
+
+\subsection{Vertexing in testbeam}
+
+It is my current understanding that we do not use the ElasticArms method employed by the ND and FD reconstruction, but rather we simply use the vertex provided by the entry point of th wiredhamber track with the front face of the nova detector.
+
+\subsection{What are prongs}
+
+Prongs used in testbeam analyses are of the type ``fuzzykvertex:Prongs3D''. They are clusters of cells that have been clustered together using the FuzzyK algorithm.\\[1ex]
+
+During reconstruction, all cell hits are used as inputs to the FuzzyK prong algorithm, not just those hits that are in-time with a beamline trigger.
+
+\subsection{First look at prongs}
+
+Prong length for different particle species\\
+
+Prong energy for different particle species\\
+
+Prong dE/dx for different particle species\\
+
+
+%Prongs are 2D or 3D objects made from clusters of cells and the interpolation between them. The FuzzyK algorithm is used for their reconstruction. The testbeam data processing chain makes prongs from all cell hits, even those that are not in time with a beamline trigger. Prongs can be used in place of tracks for the trajectories of particles passing through the detector. I don't know why we need both, actually.
+%
+%A prong is seeded by a vertex, which in the case of the tesbeam is the entry point of the beamline track and the front face of the detector.
+%
+%One issue that arose recently is that there can be more than one prong in a slice, which doesn't make sense as there is only ever one beamline track. Or maybe it does make sense, as there can be two separate clusters of cells pointing back to that same vertex.
+%
+%
+%Prongs or tracks can be used for a measurement of dE/dx, that is the energy lost by a particle as it passes through the detector. 
+
+
+
