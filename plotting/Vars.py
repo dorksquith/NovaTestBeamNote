@@ -211,7 +211,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "x1"):
 		var1="_wc_x1"
 		var2="_wcn_x1"
-		vartitle ="WC1 hit x-position [cm]"
+		vartitle ="WC1 hit x-position [mm]"
 		wc1_center =  -455.752 
 		n = 50
 		xlow = wc1_center-100
@@ -220,7 +220,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "x2"):
 		var1="_wc_x2"
 		var2="_wcn_x2"
-		vartitle ="WC2 hit x-position [cm]"
+		vartitle ="WC2 hit x-position [mm]"
 		wc2_center =  -859.993 
 		n = 50
 		xlow = wc2_center-100
@@ -229,7 +229,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "x3"):
 		var1="_wc_x3"
 		var2="_wcn_x3"
-		vartitle ="WC3 hit x-position [cm]"
+		vartitle ="WC3 hit x-position [mm]"
 		wc3_center =  -1352.85 
 		n = 50
 		xlow = wc3_center-100
@@ -238,7 +238,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "x4"):
 		var1="_wc_x4"
 		var2="_wcn_x4"
-		vartitle ="WC4 hit x-position [cm]"
+		vartitle ="WC4 hit x-position [mm]"
 		wc4_center =  -1353.87 
 		n = 50
 		xlow = wc4_center-100
@@ -247,7 +247,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "y1"):
 		var1="_wc_y1"
 		var2="_wcn_y1"
-		vartitle ="WC 1 hit y-position [cm]"
+		vartitle ="WC 1 hit y-position [mm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
@@ -255,7 +255,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "y2"):
 		var1="_wc_y2"
 		var2="_wcn_y2"
-		vartitle ="WC2 hit y-position [cm]"
+		vartitle ="WC2 hit y-position [mm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
@@ -263,7 +263,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "y3"):
 		var1="_wc_y3"
 		var2="_wcn_y3"
-		vartitle ="WC3 hit y-position [cm]"
+		vartitle ="WC3 hit y-position [mm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
@@ -271,7 +271,7 @@ def SetupVar(varshort,particle,momentum):
 	elif (varshort == "y4"):
 		var1="_wc_y4"
 		var2="_wcn_y4"
-		vartitle ="WC4 hit y-position [cm]"
+		vartitle ="WC4 hit y-position [mm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
