@@ -59,7 +59,13 @@ def SetupCuts(args):
 	cutCP   = TCut(cp_cut)
 	base += cutCP
 
-
+	# for simulated data, switch for requiring at least one FLSHit -moved into a cut in TrackAna_module
+	# flshits      = args.flshits
+	# fls_cut  = GetCut("flshits",flshits)
+	# flsshort = GetShort("flshits",flshits)
+	# s_fls    = GetLabel("flshits",flshits)
+	# cutFLS   = TCut(fls_cut)
+	# base += cutFLS
 
 	# switch for selecting a particular plane to plot
 	plane      = args.plane
@@ -67,18 +73,43 @@ def SetupCuts(args):
 	planeshort = GetShort("plane",plane)
 	s_plane    = GetLabel("plane",plane)
 	
-
 	# switch for selecting tracks with N wirechambers missing 
 	wcmiss      = args.wcmissing
 	wcmiss_cut  = GetCut("wcmiss",wcmiss)
 	wcmshort    = GetShort("wcmiss",wcmiss)
 	s_wcmiss    = GetLabel("wcmiss",wcmiss)
 	cutWCM      = TCut(wcmiss_cut)
+	if(wcmiss>-1):
+		base += cutWCM
+
+	# is this mc
+	mc = args.mc
+	if mc==1:
+		partshort="mc"
+		s_particle="mc"
+
+	# switch for choosing magnet current range
+	amps = args.amps
+	amps_cut    = GetCut("amps",amps)
+	ampsshort   = GetShort("amps",amps)
+	s_amps      = GetLabel("amps",amps)
+	cutAmps     = TCut(amps_cut)
+	if(amps>0):
+		base += cutAmps
+
+	# switch for choosing entry point of track to magnetic field
+	magdist = args.magdist
+	magdist_cut    = GetCut("magdist",magdist)
+	magdistshort   = GetShort("magdist",magdist)
+	s_magdist     = GetLabel("magdist",magdist)
+	cutMagdist    = TCut(magdist_cut)
+	if(magdist>0):
+		base += cutMagdist
 
 	pngname_prefix = partshort+"_"+periodshort+"_"
-	pngname_suffix = "_"+qualshort+"_"+polshort+"_"+momshort+"_"+cpshort+".png"
+	pngname_suffix = "_"+qualshort+"_"+polshort+"_"+momshort+"_"+cpshort+"_"+ampsshort+"_"+magdistshort+".png"
 
-	return base, pngname_prefix, pngname_suffix, s_period, s_particle, s_momentum, s_polarity, s_quality
+	return base, pngname_prefix, pngname_suffix, s_period, s_particle, s_momentum, s_polarity, s_quality, s_amps, s_magdist
 
 
 def GetCut(cutname, cutvalue):
@@ -100,12 +131,16 @@ def GetCut(cutname, cutvalue):
 			cut = "_pass_trigger && _pass_tof && _pass_deadtime_info && _pass_deadtime_det && _pass_intimehit"
 	
 	if cutname == "particle":
+		# m=938.27, +20%=1125.924, -20%=750.616
 		if cutvalue=="proton":
-			cut = "_wcn_mass > 0.93 && _wcn_mass <0.97"
+			cut = "_wcn_mass > 0.75 && _wcn_mass <1.13"
+		# m=139.570, +20% =167.48, -20% = 111.656	
+		# m=139.570, +50% =209.355, -50% = 69.785	
 		if cutvalue=="pimu":
-			cut = "_wcn_mass > 0 && _wcn_mass <0.3"
+			cut = "_wcn_mass > 0.07 && _wcn_mass <0.21"
+		# m=493.677, +20%=592.4124, -20%=394.94
 		if cutvalue=="kaon":
-			cut = "_wcn_mass > 0.4 && _wcn_mass <0.6"
+			cut = "_wcn_mass > 0.39 && _wcn_mass <0.59"
 		if cutvalue=="ckov":
 			cut = "_pass_cherenkov"
 
@@ -120,11 +155,19 @@ def GetCut(cutname, cutvalue):
 			cut = "_ev_current > _wcn_pp-"+str(150)+" && _ev_current< _wcn_pp+"+str(100)
 			
 	if cutname == "plane":
-			cut = "_hitvec_plane=="+str(cutvalue)
+		cut = "_hitvec_plane=="+str(cutvalue)
 
 	if cutname == "wcmiss":
-			cut = "_wcn_missing=="+str(cutvalue)
+		cut = "_wcn_missing=="+str(cutvalue)
 
+	if cutname == "flshits" and cutvalue>0:
+		cut = "_hitvec_nflshits>"+str(cutvalue)
+
+	if cutname == "amps" and cutvalue>0:
+		cut = "_ev_current>"+str(cutvalue-1)+" && _ev_current<"+str(cutvalue+1)
+
+	if cutname == "magdist" and cutvalue>0:
+		cut = "_wcn_magdist>"+str(cutvalue-1)+" && _wcn_magdist<"+str(cutvalue+1)
 	return cut
 
 
@@ -161,13 +204,21 @@ def GetShort(cutname, cutvalue):
 	if cutname == "wcmiss":
 		shortname = "wcmiss"+str(cutvalue)
 
+	if cutname == "flshits":
+		shortname = "flshit"
+
+	if cutname == "amps":
+		shortname = "current"+str(cutvalue)
+
+	if cutname == "magdist":
+		shortname = "magdist"+str(cutvalue)
 	return shortname
 
 
 
 
 def GetLabel(cutname,cutvalue):
-	print("cutvalue: ",cutvalue)
+	print("cutname: %s, cutvalue: %s"%(cutname,cutvalue))
 	if type(cutvalue) == float:
 		print("int(cutvalue): ",int(cutvalue))
 		cutvalue = int(cutvalue)
@@ -205,5 +256,20 @@ def GetLabel(cutname,cutvalue):
 	
 	if cutname == "wcmiss":
 		label = "WC miss "+str(cutvalue)
+
+	if cutname == "flshits":
+		label = "FLSHit > "+str(cutvalue)
+
+	if cutname == "amps":
+		if cutvalue > 0:
+			label = str(cutvalue-1)+" < I < "+str(cutvalue+1)+" Amps"
+		else:
+			label = str(500)+" < I < "+str(1250)+" Amps"
+	
+	if cutname == "magdist":
+		if cutvalue > 0:
+			label = str(cutvalue-1)+" < r_{mag} < "+str(cutvalue+1)+" cm"
+		else:
+			label = str(10)+" < r_{mag} < "+str(10)+" Amps"
 
 	return label

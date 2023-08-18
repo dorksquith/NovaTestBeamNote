@@ -18,15 +18,18 @@ import os
 
 def parse_args():
 	parser = argparse.ArgumentParser(	prog='single-plot.py',    description='Makes a canvas with 1 plot')           
-	parser.add_argument('-period', '--period',  default = "34",      choices=["234","34","2","3","4"] ) 
+	parser.add_argument('-period', '--period',  default = "234",      choices=["234","34","2","3","4"] ) 
 	parser.add_argument('-var',   '--varshort',  default = "mass", choices=['beta','mass',
 		'p','magdist','ykink','residual', 'pp',
 		'x','y','mex','mey','mez','theta','phi','dix','diy','diz','ddx','ddy','ddz',
 		'x1','x2','x3','x4','y1','y2','y3','y4',
 		'intensity','run',
 		'width','avgpe','avgdr','n','totpe','gev','frac','len','dedx','nhits',
-		'detx','ke','last','hitdr','hitpe','hitdx','hitdy'] )
-	parser.add_argument('-level', '--cutlevel',  default = 0,      choices=[0,1,2,3,4], type=int )   
+		'detx','ke','last','hitdr','hitpe','hitdx','hitdy','mcke','mcp',
+		'miss','amps'
+		] )
+	parser.add_argument('-var2',   '--var2short',  default = "mcke" )
+	parser.add_argument('-level', '--cutlevel',  default = 3,      choices=[0,1,2,3,4], type=int )   
 	parser.add_argument('-pol',   '--polarity',  default = -1,      choices=[-1,0,1],       type=int )
 	parser.add_argument('-norm',  '--normalise', default = 0,      choices=[0,1],       type=int )
 	
@@ -37,12 +40,19 @@ def parse_args():
 	
 	parser.add_argument('-betacut','--betacut',  default = 0,      choices=[-1,0,1], type=int )
 	parser.add_argument('-mom',    '--momentum', default = 0,      type=float )
-	parser.add_argument('-cur',    '--current',  default = 0,      type=float )
+	#parser.add_argument('-cur',    '--current',  default = 0,      type=float )
 	parser.add_argument('-cp',     '--cp',       default = 1,      choices=[0,1], type=int )
 	parser.add_argument('-plane',  '--plane',    default = 0,      type=int )
 	parser.add_argument('-lastplane',  '--lastplane',    default = -1,      type=int )
 	parser.add_argument('-fit',  '--do_fit',    default = 0,      type=int )
-	parser.add_argument('-miss',         '--wcmissing',    default = 0,      choices=[0,2,3,4],   type=int )
+	parser.add_argument('-miss',         '--wcmissing',    default = -1,      choices=[0,1,2,3,4],   type=int )
+	#parser.add_argument('-fls',          '--flshits',    default = -1,      choices=[-1,0],   type=int )
+	parser.add_argument('-mc',           '--mc',    default = 0,      choices=[0,1],   type=int )
+	parser.add_argument('-datamc',       '--datamc',    default = 0,      choices=[0,1],   type=int )
+	#parser.add_argument('-amps',         '--amps',       default = 0,      choices=[0,500,750,1000,1250],   type=int )
+	parser.add_argument('-amps',         '--amps',       default = 0,      choices=[0,1234,1000,991,987,750,740,500,495,493,485],   type=int )
+	parser.add_argument('-magdist',      '--magdist',    default = 0,      type=int )
+	
 	return parser.parse_args()
 
 
@@ -52,10 +62,20 @@ def main():
 	
 	
 	# input file
-	fname = "trackan11_p234.root"
+	#fname = "trackan11_p234.root"
+	#fname = "offset012345.root" #mc
+	#ismc = 1
+	fname="newprod_period234_v1.root"
+	#fname="newprod_period4_v1.root"
+	#fname = "data_p4_new.root"
+	ismc=0
+
+	period="234"
 	f= TFile(fname)
 	f.cd("testbeamtrackana")
 	t= gDirectory.Get("trackTree")
+
+
 
 	# configure the plot settings
 	alf = 0.1 # percentage opacity for fill
@@ -64,7 +84,10 @@ def main():
 	varshort = args.varshort
 	xvars=[varshort]
 
-	base, prefix, suffix, s_period, s_particle, s_momentum, s_polarity, s_quality = SetupCuts(args)
+
+	base, prefix, suffix, s_period, s_particle, s_momentum, s_polarity, s_quality, s_amps, s_magdist = SetupCuts(args)
+
+
 
 
 	# switch for normalisation
@@ -86,25 +109,47 @@ def main():
 	# switch for fitting a gaussian to the histogram
 	do_fit = bool(args.do_fit)
 
+	# switch for doing data and mc on same plot
+	do_datamc = bool(args.datamc)
+
+	if do_datamc:
+		fnamemc = "sim_p4.root"
+		fmc= TFile(fnamemc)
+		fmc.cd("testbeamtrackana")
+		tmc= gDirectory.Get("trackTree")
+		var2short = args.var2short
+		x2vars=[var2short]
+		print("var2short: ",var2short)
 
 	# switch for selecting lastplane (for proton ke plot)
 	lastplane= args.lastplane
 	s_lastplane =str(lastplane)
 	if(lastplane>0):
 		lastplane_cut = "_hit_lastplane=="+str(lastplane)
-		lpshort="LP"+s_lastplane
+		base+=TCut(lastplane_cut)
+		lpcut=TCut(lastplane_cut)
+		lpshort="LP"+s_lastplane+"_"
+		prefix+=lpshort
 	else:
 		lastplane_cut = ""
 		lpshort=""
 
+	mc_cuts = TCut(lastplane_cut)+TCut("_part_dproc>1")
 
 	for ivar in range(len(xvars)):
 	
-		pngname = prefix+xvars[ivar]+suffix
+		pngname = "newprod_"+prefix+xvars[ivar]+suffix
 
-		var1, vartitle, nbins, xlow, xhigh = SetupVar(xvars[ivar],args.particle,args.momentum)
-		var2 = var1
-		#var1, var2, vartitle, ytitle, nbins, xlow, xhigh = SetupVar(xvars[ivar], args.particle, args.momentum)
+		
+		var1, vartitle, nbins, xlow, xhigh = SetupVar(xvars[ivar],args.particle,args.momentum,args.amps)
+		
+		if do_datamc:
+			var2, vartitle, nbins, xlow, xhigh = SetupVar(x2vars[ivar],args.particle,args.momentum,args.amps)
+		else:
+			var2 = var1
+
+		
+		
 		ytitle =""
 
 		latex = ROOT.TLatex ()
@@ -133,15 +178,27 @@ def main():
 
 		# start with the new * point tracks, as we will always draw them.
 		h1= TH1F("h1","h1",nbins,xlow,xhigh)
-		t.Draw(var2+'>>h1',base,'goff')
+		t.Draw(var1+'>>h1',base,'goff')
 		if norm and h1.Integral()>0:
 			h1.Scale(1./h1.Integral(),"nosw2")
 		amax = h1.GetMaximum()
 		mean = h1.GetMean()
 		print("mean: ",mean)
-		print("MaximumBin: ", h1.GetMaximumBin())
+		print("rms: ",h1.GetRMS())
+		print("integral: ",h1.Integral())
+		#print("MaximumBin: ", h1.GetMaximumBin())
 		xpeak = h1.GetXaxis().GetBinCenter(h1.GetMaximumBin())
-		print("xpeak: ",xpeak)
+		#print("xpeak: ",xpeak)
+
+		# add the uncorrected momentum if we are plotting momentum and not plotting 3tracks (too busy)
+		#if(varshort=='p' and do_t3==False):
+		if(do_datamc):
+			h1b= TH1F("h1b","h1b",nbins,xlow,xhigh)		
+			tmc.Draw(var2+'>>h1b',mc_cuts,'goff')
+			print("mc integral: ",h1b.Integral())
+			if norm and h1b.Integral()>0:
+				h1b.Scale(1./h1b.Integral(),"nosw2")		
+			amax = max(h1.GetMaximum(), h1b.GetMaximum())
 
 		# add the uncorrected momentum if we are plotting momentum and not plotting 3tracks (too busy)
 		#if(varshort=='p' and do_t3==False):
@@ -150,6 +207,7 @@ def main():
 			t.Draw(var2+'>>h1b',track4,'goff')
 			if norm and h1b.Integral()>0:
 				h1b.Scale(1./h1b.Integral(),"nosw2")
+			amax = max(h1.GetMaximum(), h1b.GetMaximum())
 
 		# original tracking
 		if (do_old):
@@ -214,11 +272,18 @@ def main():
 		
 
 		# new 4point tracks are green, draw them now
-		h1.SetLineWidth(lw)
-		h1.SetLineColor(420)
-		h1.SetFillColorAlpha(417,alf)
 
-
+		if do_datamc:
+			h1.SetMarkerStyle(104)
+			h1.SetMarkerSize(4)
+			h1.SetMarkerColor(1)
+			
+			h1.GetXaxis().SetTitle("Kinetic Energy [GeV]")
+		else:
+			h1.SetLineWidth(lw)
+			h1.SetLineColor(420)
+			h1.SetFillColorAlpha(417,alf)	
+			h1.GetXaxis().SetTitle(vartitle)		
 
 		# totmax is retrieved by GetMaximumForVar which is just a beast - redo this
 		h1.SetMaximum(amax*1.1)
@@ -229,7 +294,7 @@ def main():
 		h1.GetXaxis().SetNdivisions(510)
 		h1.GetYaxis().SetNdivisions(5)
 
-		h1.GetXaxis().SetTitle(vartitle)
+		
 		h1.GetYaxis().SetTitle(ytitle)
 		h1.GetYaxis().SetTitleOffset(1.6)
 
@@ -256,9 +321,10 @@ def main():
 			hmean = h1.GetMean()
 			hrms = h1.GetRMS()
 
-			g1 = TF1 ( "g1" ,"gaus" ,xpeak-25,xpeak+25)
+			g1 = TF1 ( "g1" ,"gaus" ,xpeak-0.05,xpeak+0.05)
 			g1.SetParameters(100,xpeak,hrms)
-			h1.Fit(g1,"R") # fit the whole range  
+			#h1.Fit(g1,"R") # fit the whole range  
+			h1.Fit(g1) # fit the whole range  
 			par=np.zeros(6)                                                                                                                                    
 			g1.GetParameters(par[:3])
 			gcons=g1.GetParameter(0)
@@ -270,9 +336,11 @@ def main():
 			# p0 = -1392.58
 			# p1 =  2.79918
 			# p2 = -0.00138153
-			gint = TF1 ( "gint" ,"pol2" ,900,1150)
-			gint.SetParameters(-1392.58,2.79918,-0.00138153)
-			h1.Fit(gint,"R") # fit the whole range  
+			#gint = TF1 ( "gint" ,"pol2" ,900,1150)
+			#gint = TF1 ( "gint" ,"pol2" ,xpeak,hrms)
+			#gint.SetParameters(-1392.58,2.79918,-0.00138153)
+			#gint.SetParameters(gcons,gmean,gsigma)
+			#h1.Fit(gint,"R") # fit the whole range  
 			                                                                                                                                   
 			# gint.GetParameters(par[3:6])
 			# gintcons=gint.GetParameter(0)
@@ -292,16 +360,22 @@ def main():
 			#gg = TF1("gg", "gaus(0)+pol2(3)", gmean-50, 1150)
 			#gg.SetParameters(par);
 
-		h1.DrawCopy()
+		if do_datamc:
+			h1.DrawCopy("p")
+		else:
+			h1.DrawCopy()			
 
 		# in case we want to add the uncorrected momentum
-		#if(varshort=='p' and do_t3==False):
-		#	h1b.SetLineColor(632)
-		#	h1b.SetLineStyle(7)
-		#	h1b.SetFillColor(0)
-		#	h1b.SetLineWidth(lw)
-		#	h1b.DrawCopy("same")		
-
+		if(do_datamc):
+			h1b.SetLineColor(632)
+			h1b.SetLineStyle(7)
+			h1b.SetFillColor(0)
+			h1b.SetLineWidth(lw)
+				
+			h1b.SetLineColor(860)
+			h1b.SetLineStyle(1)	
+			h1b.SetLineWidth(2)
+			h1b.DrawCopy("same")
 		# if we want the original tracks drawn
 		if(do_old):
 			h2.SetLineColor(863)
@@ -345,12 +419,14 @@ def main():
 		if (do_fit):
 			g1.SetLineWidth(5)
 			g1.SetLineColor(860)
-			h1.Fit(g1,"R+")
+			#h1.Fit(g1,"R+")
+			h1.Fit(g1)
 			chi2   = g1.GetChisquare()
 			ndof   = g1.GetNDF ()
 			gmean  = g1.GetParameter(1)
 			gsigma = g1.GetParameter(2)
 
+			"""
 			gint.SetLineColor(632)
 			gint.SetLineWidth(5)
 			gint.SetLineStyle(7)
@@ -360,7 +436,7 @@ def main():
 			int_p0  = gint.GetParameter(0)
 			int_p1  = gint.GetParameter(1)
 			int_p2 = gint.GetParameter(2)
-
+			"""
 
 		# add some vertical lines if we are plotting magdist
 		if (varshort == "magdist"):
@@ -393,20 +469,26 @@ def main():
 
 		latex.DrawText(text_x_pos ,amax*0.81 ,"quality cut level "+s_quality)
 
+		# current range
+		#latex.DrawText(text_x_pos ,amax*0.73 ,s_amps)
+
+		# transverse magnet entry point 
+		#latex.DrawText(text_x_pos ,amax*0.65 ,s_magdist)
+
 		# plots of ke by last plane hit
 		if(lastplane>0):
 			latex.DrawText(text_x_pos ,amax*0.73 ,"last plane "+s_lastplane)
 
 		if do_fit:
 			latex.SetTextColor(860)
-			latex.DrawText(text_x_pos ,amax*0.65, "Stopping protons")
-			latex.DrawText(text_x_pos ,amax*0.57, " Mean = %.0f MeV " %( gmean ))
-			latex.DrawText(text_x_pos ,amax*0.49 , " Width = %.0f MeV " %( gsigma))
+			latex.DrawText(text_x_pos ,amax*0.65, "Stopping particles")
+			latex.DrawText(text_x_pos ,amax*0.57, " Mean = %.2f GeV " %( gmean ))
+			latex.DrawText(text_x_pos ,amax*0.49 , " Width = %.2f GeV " %( gsigma))
 			latex.DrawLatex(text_x_pos ,amax*0.41 , " #chi^{2}/n = %.1f " %(chi2 / ndof ))
-			latex.SetTextColor(632)
-			latex.DrawText(text_x_pos ,amax*0.33, "Interacting protons")
-			latex.DrawText(text_x_pos ,amax*0.25, " f(KE) = %.0f + %.0f x + %.3f x^2  " %( int_p0, int_p1, int_p2 ))
-			latex.DrawLatex(text_x_pos ,amax*0.17 , " #chi^{2}/n = %.1f " %(int_chi2 / int_ndof ))
+			#latex.SetTextColor(632)
+			#latex.DrawText(text_x_pos ,amax*0.33, "Interacting protons")
+			#latex.DrawText(text_x_pos ,amax*0.25, " f(KE) = %.0f + %.0f x + %.3f x^2  " %( int_p0, int_p1, int_p2 ))
+			#latex.DrawLatex(text_x_pos ,amax*0.17 , " #chi^{2}/n = %.1f " %(int_chi2 / int_ndof ))
 
 		# track types	
 		if(do_old==False):
@@ -445,6 +527,8 @@ def main():
 
 		gPad.Update()
 		gPad.Modified()
+
+		print("h1.Integral(): ",h1.Integral())
 
 		c.Print(pngname)
 		c.Close()

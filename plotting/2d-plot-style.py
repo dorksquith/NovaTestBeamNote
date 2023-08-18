@@ -18,7 +18,7 @@ def parse_args():
 	parser = argparse.ArgumentParser(	prog='2d-plot-style.py',    description='Makes a canvas with 1 plot')           
 	parser.add_argument('-varx',         '--varxshort',    default = "mass"    )
 	parser.add_argument('-vary',         '--varyshort',    default = "p"      )
-	parser.add_argument('-level',        '--cutlevel',     default = 0,      choices=[0,1,2,3,4], type=int )   
+	parser.add_argument('-level',        '--cutlevel',     default = 3,      choices=[0,1,2,3,4], type=int )   
 	parser.add_argument('-pol',          '--polarity',     default = -1,     choices=[0,1,-1],    type=int )
 	parser.add_argument('-period',       '--period',       default = 234,      choices=[2,3,4,234], type=int)
 	parser.add_argument('-plane',        '--plane',        default = 0,                           type=int)
@@ -26,22 +26,33 @@ def parse_args():
 	parser.add_argument('-pbp',          '--planebyplane', default = 0,      choices=[0,1],       type=int)
 	parser.add_argument('-mom',          '--momentum',     default = 0,                           type=float )
 	parser.add_argument('-cp',           '--cp',           default = 1,      choices=[0,1],       type=int )
-	parser.add_argument('-miss',         '--wcmissing',    default = 0,      choices=[0,2,3,4],   type=int )
+	parser.add_argument('-miss',         '--wcmissing',    default = -1,      choices=[-1,0,2,3,4],   type=int )
+	parser.add_argument('-fls',          '--flshits',    default = -1,      choices=[-1,0],   type=int )
+	parser.add_argument('-mc',           '--mc',         default = 0,      choices=[0,1],   type=int )
+	parser.add_argument('-amps',         '--amps',       default = 0,      choices=[0,1234,1000,991,987,750,740,500,495,493,485],   type=int )
+	parser.add_argument('-magdist',      '--magdist',    default = 0,      type=int )
 	return parser.parse_args()
 
-args = parse_args()
+
 
 
 def main():
 
+	args = parse_args()
+
 	# input file
-	fname = "trackan11_p234.root"
+	fname="newprod_period234_v1.root"
+	#fname = "data_offset0.root"
+	#fname = "trackan11_p234.root"
+	#fname = "offset012345.root" # monte carlo
+	#fname = "trackana.root" # monte carlo
 	f= TFile(fname)
 	f.cd("testbeamtrackana")
 	t= gDirectory.Get("trackTree")
 
 
-	base, prefix, suffix, s_period, s_particle, s_momentum, s_polarity, s_quality = SetupCuts(args)
+	base, prefix, suffix, s_period, s_particle, s_momentum, s_polarity, s_quality, s_amps, s_magdist = SetupCuts(args)
+
 		
 	# switch for which variables to plot
 	varxshort = args.varxshort
@@ -63,13 +74,13 @@ def main():
 
 			# output figure name
 			#pngname = partshort+'_'+periodshort+'_'+xvars[ivar]+'_'+yvars[jvar]+"_"+qualshort+"_"+polshort+"_"+momshort+"_"+cpshort+".png"
-			pngname = prefix+xvars[ivar]+'_'+yvars[jvar]+suffix
+			pngname = "newprod_"+prefix+xvars[ivar]+'_'+yvars[jvar]+suffix
 
 			# ----------------------------------------------------------------#
 			# DO STUFF
 			# ----------------------------------------------------------------#
-			varx, xtitle, nxbins, xlow, xhigh = SetupVar(xvars[ivar],args.particle,args.momentum)
-			vary, ytitle, nybins, ylow, yhigh = SetupVar(yvars[jvar],args.particle,args.momentum)
+			varx, xtitle, nxbins, xlow, xhigh = SetupVar(xvars[ivar],s_particle,args.momentum,args.amps)
+			vary, ytitle, nybins, ylow, yhigh = SetupVar(yvars[jvar],s_particle,args.momentum,args.amps)
 
 			h1= TH2F("h1","h1",nxbins, xlow, xhigh, nybins, ylow, yhigh)
 
@@ -154,7 +165,10 @@ def main():
 			latex.DrawText(text_x_pos ,text_y_pos*0.89 , s_momentum)
 			# quality
 			latex.DrawText(text_x_pos ,text_y_pos*0.81 ,s_quality)
-
+			# current range
+			#latex.DrawText(text_x_pos ,text_y_pos*0.73 ,s_amps)
+			# transverse magnet entry point 
+			#latex.DrawText(text_x_pos ,text_y_pos*0.65 ,s_magdist)
 
 			for xbin in range(1,h1.GetNbinsX()+1):
 				x = h1.GetXaxis().GetBinLowEdge(xbin) 

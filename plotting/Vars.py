@@ -1,9 +1,9 @@
 # set up variable for making 1D or 2D plots 
 
-def SetupVar(varshort,particle,momentum):
+def SetupVar(varshort,particle,momentum,current):
 
 	if (varshort == "mass"):
-		var1="_wc_mass"
+		var1="_wcn_mass"
 		var2="_wcn_mass"
 		vartitle ="WC track mass [GeV]"
 		n = 250
@@ -27,25 +27,43 @@ def SetupVar(varshort,particle,momentum):
 			xhigh = 0.4
 
 	elif (varshort == "p"):
-		var1="_wc_p"
+		var1="_wcn_p"
 		var2="_wcn_p"
 		vartitle ="WC track momentum [MeV]"
-		n = 140
+		n = 70
 		xlow = 350
 		xhigh = 1750
 		if momentum>0 :
 			n = 30
 			xlow = momentum-150
-			xhigh = momentum+250			
+			xhigh = momentum+250
+		if current>0 :
+			xlow = current-250
+			xhigh = current+250					
 
 	elif (varshort == "ke"):
 		var1="_wcn_ke"
 		var2="_wcn_ke"
-		vartitle ="WC track KE [MeV]"
-		n = 40
+		vartitle ="WC track KE [GeV]"
+		n = 200
 		xlow = 0
-		xhigh = 2000
+		xhigh = 2.0
 
+	elif (varshort == "mcke"):
+		var1="_part_ke"
+		var2="_part_ke"
+		vartitle ="Particle KE [GeV]"
+		n = 120
+		xlow = 0
+		xhigh = 1.2
+	
+	elif (varshort == "mcp"):
+		var1="_part_p"
+		var2="_part_p"
+		vartitle ="Particle momentum [GeV]"
+		n = 60
+		xlow = 0
+		xhigh = 1.2
 
 	elif (varshort == "pp"):
 		var1="_wcn_pp"
@@ -56,9 +74,21 @@ def SetupVar(varshort,particle,momentum):
 		xlow = 350
 		xhigh = 1750
 
+	elif (varshort == "amps"):
+		var1="_ev_current"
+		var2="_ev_current"
+		vartitle ="Magnet Current [Amps]"
+		
+		n = 1500
+		xlow = 0
+		xhigh = 1500
+		if current>0:
+			n=20
+			xlow=current-2
+			xhigh=current+2
 
 	elif (varshort == "magdist"):
-		var1="_wc_magdist"
+		var1="_wcn_magdist"
 		var2="_wcn_magdist"
 		vartitle ="Transverse distance between track and magnet axis [cm]"
 		n = 60
@@ -67,7 +97,7 @@ def SetupVar(varshort,particle,momentum):
 
 
 	elif (varshort == "ykink"):
-		var1="_wc_ykink"
+		var1="_wcn_ykink"
 		var2="_wcn_ykink"
 		#vartitle ="Angular difference (dy/dz) between upstream and downstream track"
 		vartitle ="y-kink"
@@ -77,34 +107,34 @@ def SetupVar(varshort,particle,momentum):
 
 	
 	elif (varshort == "residual"):
-		var1="_wc_residual"
+		var1="_wcn_residual"
 		var2="_wcn_residual"
 		vartitle ="Track fit average residual"#  #sum_{n} ((y_i - slope*z_i - intercept  ) / (#sqrt{1+slope^2})^2 / (n-2)"
-		n = 60
+		n = 80
 		xlow = 0
-		xhigh = 15
+		xhigh = 8
 
 
 	elif (varshort == "x"):
-		var1="_wc_x"
+		var1="_wcn_x"
 		var2="_wcn_x"
 		vartitle ="Projected track x-position relative to NOvA front face [cm]"
-		n = 40
+		n = 50
 		xlow = -20
-		xhigh = 20
+		xhigh = 30
 
 
 	elif (varshort == "y"):
-		var1="_wc_y"
+		var1="_wcn_y"
 		var2="_wcn_y"
 		vartitle ="Projected track y-position relative to NOvA front face [cm]"
-		n = 40
+		n = 50
 		xlow = -20
-		xhigh = 20
+		xhigh = 30
 
 	
 	elif (varshort == "mex"):
-		var1="_wc_mex"
+		var1="_wcn_mex"
 		var2="_wcn_mex"
 		vartitle ="Magnet entry x-position relative to magnet [cm]"
 		n = 60
@@ -113,7 +143,7 @@ def SetupVar(varshort,particle,momentum):
 
 	
 	elif (varshort == "mey"):
-		var1="_wc_mey"
+		var1="_wcn_mey"
 		var2="_wcn_mey"
 		vartitle ="Magnet entry y-position relative to magnet [cm]"
 		n = 40
@@ -123,7 +153,7 @@ def SetupVar(varshort,particle,momentum):
 	
 	# for _wc_ the mez variable is offset by -1040. I do not know why
 	elif (varshort == "mez"):
-		var1="_wc_mez"
+		var1="_wcn_mez"
 		var2="_wcn_mez"
 		vartitle ="Magnet entry z-position relative to magnet [cm]"
 		n = 80
@@ -132,7 +162,7 @@ def SetupVar(varshort,particle,momentum):
 
 
 	elif (varshort == "theta"):
-		var1="_wc_ditheta"
+		var1="_wcn_ditheta"
 		var2="_wcn_ditheta"
 		vartitle ="Downstream track direction theta [radians]"
 		n = 50
@@ -141,7 +171,7 @@ def SetupVar(varshort,particle,momentum):
 
 
 	elif (varshort == "phi"):
-		var1="_wc_diphi"
+		var1="_wcn_diphi"
 		var2="_wcn_diphi"
 		vartitle ="Downstream track direction phi [radians]"
 		n = 64
@@ -150,7 +180,7 @@ def SetupVar(varshort,particle,momentum):
 
 
 	elif (varshort == "dix"):
-		var1="_wc_dix"
+		var1="_wcn_dix"
 		var2="_wcn_dix"
 		vartitle ="Downstream track direction x-component [unit vector]"
 		n = 50
@@ -159,7 +189,7 @@ def SetupVar(varshort,particle,momentum):
 	
 	
 	elif (varshort == "diy"):
-		var1="_wc_diy"
+		var1="_wcn_diy"
 		var2="_wcn_diy"
 		vartitle ="Downstream track direction y-component [unit vector]"
 		n = 30
@@ -168,7 +198,7 @@ def SetupVar(varshort,particle,momentum):
 	
 	
 	elif (varshort == "diz"):
-		var1="_wc_diz"
+		var1="_wcn_diz"
 		var2="_wcn_diz"
 		vartitle ="Downstream track direction z-component [unit vector]"
 		n = 50
@@ -177,7 +207,7 @@ def SetupVar(varshort,particle,momentum):
 
 	
 	elif (varshort == "ddx"):
-		var1="_wc_ddx"
+		var1="_wcn_ddx"
 		var2="_wcn_ddx"
 		vartitle ="Difference in x_0 between us and ds tracks [cm]"
 		n = 300
@@ -185,7 +215,7 @@ def SetupVar(varshort,particle,momentum):
 		xhigh = 240
 
 	elif (varshort == "ddy"):
-		var1="_wc_ddy"
+		var1="_wcn_ddy"
 		var2="_wcn_ddy"
 		vartitle ="Difference in y_o between us and ds tracks [cm]"
 		n = 60
@@ -193,7 +223,7 @@ def SetupVar(varshort,particle,momentum):
 		xhigh = 30
 	
 	elif (varshort == "ddz"):
-		var1="_wc_ddz"
+		var1="_wcn_ddz"
 		var2="_wcn_ddz"
 		vartitle ="Difference in z_0 between us and ds tracks [cm]"
 		n = 50
@@ -201,7 +231,7 @@ def SetupVar(varshort,particle,momentum):
 		xhigh = 40
 
 	elif (varshort == "ddz"):
-		var1="_wc_ddz"
+		var1="_wcn_ddz"
 		var2="_wcn_ddz"
 		vartitle ="Difference in z-intercept between upstream and downstream tracks [cm]"
 		n = 50
@@ -209,69 +239,69 @@ def SetupVar(varshort,particle,momentum):
 		xhigh = 40
 
 	elif (varshort == "x1"):
-		var1="_wc_x1"
+		var1="_wcn_x1"
 		var2="_wcn_x1"
-		vartitle ="WC1 hit x-position [mm]"
+		vartitle ="WC1 hit x-position [cm]"
 		wc1_center =  -455.752 
 		n = 50
 		xlow = wc1_center-100
 		xhigh = wc1_center+100
 
 	elif (varshort == "x2"):
-		var1="_wc_x2"
+		var1="_wcn_x2"
 		var2="_wcn_x2"
-		vartitle ="WC2 hit x-position [mm]"
+		vartitle ="WC2 hit x-position [cm]"
 		wc2_center =  -859.993 
 		n = 50
 		xlow = wc2_center-100
 		xhigh = wc2_center+100
 
 	elif (varshort == "x3"):
-		var1="_wc_x3"
+		var1="_wcn_x3"
 		var2="_wcn_x3"
-		vartitle ="WC3 hit x-position [mm]"
+		vartitle ="WC3 hit x-position [cm]"
 		wc3_center =  -1352.85 
 		n = 50
 		xlow = wc3_center-100
 		xhigh = wc3_center+100
 
 	elif (varshort == "x4"):
-		var1="_wc_x4"
+		var1="_wcn_x4"
 		var2="_wcn_x4"
-		vartitle ="WC4 hit x-position [mm]"
+		vartitle ="WC4 hit x-position [cm]"
 		wc4_center =  -1353.87 
 		n = 50
 		xlow = wc4_center-100
 		xhigh = wc4_center+100
 
 	elif (varshort == "y1"):
-		var1="_wc_y1"
+		var1="_wcn_y1"
 		var2="_wcn_y1"
-		vartitle ="WC 1 hit y-position [mm]"
+		vartitle ="WC 1 hit y-position [cm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
 
 	elif (varshort == "y2"):
-		var1="_wc_y2"
+		var1="_wcn_y2"
 		var2="_wcn_y2"
-		vartitle ="WC2 hit y-position [mm]"
+		vartitle ="WC2 hit y-position [cm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
 
 	elif (varshort == "y3"):
-		var1="_wc_y3"
+		var1="_wcn_y3"
 		var2="_wcn_y3"
-		vartitle ="WC3 hit y-position [mm]"
+		vartitle ="WC3 hit y-position [cm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
 
 	elif (varshort == "y4"):
-		var1="_wc_y4"
+		var1="_wcn_y4"
 		var2="_wcn_y4"
-		vartitle ="WC4 hit y-position [mm]"
+		vartitle ="WC4 hit y-position [cm]"
 		n = 50
 		xlow = -100
 		xhigh = 100
@@ -284,6 +314,13 @@ def SetupVar(varshort,particle,momentum):
 		xlow = 0.
 		xhigh = 2.5
 					
+	elif (varshort == "tof"):
+		var1="_tof_time"
+		var2="_tof_time"
+		vartitle ="Time of flight [ns]"
+		n = 100
+		xlow = 0.
+		xhigh = 100
 
 	elif (varshort == "intensity"):
 		var1="_ev_intensity6"
@@ -297,9 +334,9 @@ def SetupVar(varshort,particle,momentum):
 		var1="_ev_run"
 		var2="_ev_run"
 		vartitle ="Run number "
-		n = 50
-		xlow  = 100000
-		xhigh = 105000
+		n = 100
+		xlow  = 101400
+		xhigh = 102400
 	elif (varshort == "width"):
 		var1="_hit_width"
 		var2="_hit_width"
@@ -325,9 +362,9 @@ def SetupVar(varshort,particle,momentum):
 		var1="_hit_lastplane"
 		var2="_hit_lastplane"
 		vartitle ="Last plane hit"
-		xlow=1
-		xhigh=21
-		n=20		
+		xlow=0
+		xhigh=63
+		n=63		
 	elif (varshort == "n"):
 		var1="_hit_n"
 		var2="_hit_n"
@@ -367,9 +404,13 @@ def SetupVar(varshort,particle,momentum):
 		var1="_hitvec_y"
 		var2="_hitvec_y"
 		vartitle ="hit y [cm]"
-		xlow  = -123.334 - 1.72842
-		xhigh = 126.078  + 1.72842
-		n = 64
+		#xlow  = -123.334 - 1.72842
+		#xhigh = 126.078  + 1.72842
+		#n = 64
+		n = 40
+		xlow = -20
+		xhigh = 20
+		
 	elif (varshort == "hitz"):
 		var1="_hitvec_z"
 		var2="_hitvec_z"
@@ -378,16 +419,21 @@ def SetupVar(varshort,particle,momentum):
 		xhigh = 418.033 + 2.78193
 		n = 63
 	elif (varshort == "hitdr"):
-		var1="_hitvec_dr"
-		var2="_hitvec_dr"
+		var1="_hitvec_drp"
+		var2="_hitvec_drp"
+
 		vartitle ="dr(hit,wctrack) [cm]"
-		xlow=0
-		xhigh=50
-		n=50
+		if particle=="mc":
+			vartitle ="dr(hit,particle) [cm]"
+		xlow=-10
+		xhigh=10
+		n=40
 	elif (varshort == "hitdx"):
 		var1="_hitvec_dx"
 		var2="_hitvec_dx"
 		vartitle ="dx(hit,wctrack) [cm]"
+		if particle=="mc":
+			vartitle ="dx(hit,particle) [cm]"		
 		xlow=0
 		xhigh=30
 		n=30
@@ -395,6 +441,8 @@ def SetupVar(varshort,particle,momentum):
 		var1="_hitvec_dy"
 		var2="_hitvec_dy"
 		vartitle ="dy(hit,wctrack) [cm]"
+		if particle=="mc":
+			vartitle ="dy(hit,particle) [cm]"
 		xlow=0
 		xhigh=30
 		n=30
@@ -403,8 +451,8 @@ def SetupVar(varshort,particle,momentum):
 		var2="_hitvec_pe"
 		vartitle ="hit energy [PE]"
 		xlow=0
-		xhigh=600
-		n=60
+		xhigh=1000
+		n=100
 	elif (varshort == "hitgev"):
 		var1="_hitvec_gev"
 		var2="_hitvec_gev"
@@ -440,6 +488,14 @@ def SetupVar(varshort,particle,momentum):
 		n = 79
 		xlow  = 1
 		xhigh = 80	
+	elif (varshort == "miss"):
+		var1="_wcn_missing"
+		var2="_wcn_missing"
+		vartitle ="Missing wire chamber number"
+		n = 5
+		xlow  = 0
+		xhigh = 5
+
 	else:
 		print("Variable name %s not recognised, returning null properties"%(varshort))
 		return "","",0,0,0
